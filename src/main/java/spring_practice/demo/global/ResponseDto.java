@@ -22,4 +22,18 @@ public class ResponseDto<T> {
     ){
         return ResponseEntity.status(status).body(new ResponseDto<>(data, null));
     }
+
+    public static <T> ResponseEntity<ResponseDto<T>> success (
+            T data
+    ){
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto<>(data, "성공"));
+    }
+
+    public static <T> ResponseEntity<ResponseDto<T>> fail (
+            T data
+    ){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto<>(data, "실패"));
+    }
+
+
 }

@@ -50,9 +50,7 @@
          error: function(xhr){
             try{
                 const errorResponse = JSON.parse(xhr.responseText);
-
-                let errorMessages = Object.values(errorResponse).join("\n");
-                alert(errorMessages);
+                alert(errorResponse.message);
             }
             catch(e){
                 alert("회원가입 중 문제 발생")

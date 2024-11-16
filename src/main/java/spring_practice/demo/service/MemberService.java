@@ -32,15 +32,16 @@ public class MemberService {
     }
 
     @Transactional
-    public void login(LoginRequestDto loginRequestDto) {
+    public Member login(LoginRequestDto loginRequestDto) {
         // 회원 확인
         Member member = memberRepository.findByEmail(loginRequestDto.email).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                () -> new IllegalArgumentException("아이디가 일치하지 않습니다."));
         // 비밀번호 확인
         if(!passwordEncoder.matches(loginRequestDto.password, member.getPassword())){
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다 .");
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
+        return member;
 
 
 

@@ -2,6 +2,7 @@ package spring_practice.demo.global;
 
 
 import jakarta.persistence.EntityExistsException;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(EntityExistsException.class)
+    @ExceptionHandler({EntityExistsException.class, IllegalArgumentException.class})
     public ResponseEntity<ResponseDto<Void>> handleEntityExistsException(Exception e){
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -23,18 +24,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
-        Map<String, String> errors = new HashMap<>();
-
-        e.getBindingResult().getFieldErrors().forEach(error -> {
-            errors.put(error.getField(), error.getDefaultMessage());
-        });
-
+    public ResponseEntity<ResponseDto<Void>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(errors);
+                .body(new ResponseDto<>(null, e.getBindingResult().getFieldErrors().get(0).getDefaultMessage()));
     }
-
 
 
 }
