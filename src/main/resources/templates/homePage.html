@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>homePage</title>
+</head>
+<body>
+       homePage
+       <div class="container">
+           <h1>로그인</h1>
+           <div class="form-group">
+               <label for="email">email</label>
+               <input type="text" class="form-control" id="email" name="email" placeholder="사용자 email">
+           </div>
+
+           <div class="form-group">
+               <label for="password">password</label>
+               <input type="password" class="form-control" id="password" name="password" placeholder="사용자 비밀번호">
+           </div>
+
+       <button type="submit" id="loginButton" onclick="login()" class="btn btn-primary">로그인 하기 </button>
+       </div>
+       <div>
+           <button type="submit" id="signupButton" onclick="signup()" class="btn btn-primary">회원 가입하러 가기 </button>
+       </div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+
+    function login() {
+       let email = $('#email').val();
+       let password = $('#password').val();
+
+       $.ajax({
+         type: "POST",
+         url: `/member/login`,
+         contentType: "application/json",
+         data: JSON.stringify({ email: email, password: password }),
+         success: function () {
+            alert("로그인이 완료되었습니다.")
+           window.location.href = `/myPage`;
+         },
+
+         error: function(xhr){
+            try{
+                const errorResponse = JSON.parse(xhr.responseText);
+                alert(errorResponse.message);
+            }
+            catch(e){
+                alert("로그인 중 문제 발생")
+            }
+         }
+
+       });
+    }
+
+    function signup() {
+        window.location.href = `/member/signup`;
+    }
+</script>
+</html>

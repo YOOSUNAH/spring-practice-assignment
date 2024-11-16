@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div class="container">
+    <h1>회원가입</h1>
+    <div class="form-group">
+        <label for="email">email</label>
+        <input type="text" class="form-control" id="email" name="email" placeholder="사용자 email">
+    </div>
+    <div class="form-group">
+        <label for="name">name</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="사용자 이름">
+    </div>
+    <div class="form-group">
+        <label for="phoneNumber">phoneNumber</label>
+        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="전화번호">
+    </div>
+    <div class="form-group">
+        <label for="password">password</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="사용자 비밀번호">
+    </div>
+
+    <button type="submit" id="signupButton" onclick="signup()" class="btn btn-primary">회원 가입하기</button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+
+    function signup() {
+       let email = $('#email').val();
+       let name = $('#name').val();
+       let phoneNumber = $('#phoneNumber').val();
+       let password = $('#password').val();
+
+       $.ajax({
+         type: "POST",
+         url: `/member/signup`,
+         contentType: "application/json",
+         data: JSON.stringify({ email: email, name: name, phoneNumber: phoneNumber, password: password }),
+         success: function () {
+            alert("회원가입이 완료되었습니다.")
+           window.location.href = `/homePage`;
+         },
+
+         <!-- 서버에서 던지는 에러메시지를 보여주고 싶다.! -->
+         error: function(xhr){
+            try{
+                const errorResponse = JSON.parse(xhr.responseText);
+
+                let errorMessages = Object.values(errorResponse).join("\n");
+                alert(errorMessages);
+            }
+            catch(e){
+                alert("회원가입 중 문제 발생")
+            }
+         }
+
+       });
+    }
+</script>
+</body>
+</html>
