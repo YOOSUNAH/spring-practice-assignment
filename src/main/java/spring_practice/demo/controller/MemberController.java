@@ -1,13 +1,14 @@
 package spring_practice.demo.controller;
 
 import groovy.util.logging.Slf4j;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring_practice.demo.dto.LoginRequestDto;
@@ -27,23 +28,30 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity<ResponseDto<Void>> signup(@Valid @RequestBody SignUpRequestDto signUpRequestDto){
+    public ResponseEntity<ResponseDto<Void>> signup(@Valid @RequestBody SignUpRequestDto signUpRequestDto) {
 
         memberService.signup(signUpRequestDto);
-        return ResponseDto.of(HttpStatus.OK, null);
+        return ResponseDto.success(null);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseDto<Void>> login(@Valid @RequestBody LoginRequestDto loginRequestDto, HttpServletRequest httpServletRequest){
-        Member member = memberService.login(loginRequestDto);
-
-        // 세션 생성 및 정보 저장
-        HttpSession session = httpServletRequest.getSession(true);
-        session.setAttribute("memberId", member.getMemberId());
-        session.setMaxInactiveInterval(3600);
-
-        return ResponseDto.of(HttpStatus.OK, null);
+    public ResponseEntity<ResponseDto<Void>> login(@Valid @RequestBody LoginRequestDto loginRequestDto,
+                                                   HttpServletRequest httpServletRequest
+                                                   ) {
+        Member member = memberService.login(loginRequestDto, httpServletRequest);
+        return ResponseDto.success(null);
     }
 
+        // TODO: 로그인 요청 API에서 “로그인 유지” 관련 값을 같이 받아야한다. 세션 잘 생성된건지 확인해야한다.
+        @PostMapping("/keepLogin")
+        public ResponseEntity<ResponseDto<Void>> keepLogin (HttpServletRequest httpServletRequest,
+                HttpServletResponse httpServletResponse
+    ){
+            HttpSession session = httpServletRequest.getSession();
+            Object memberId = session.getAttribute("memberId");
 
-}
+            Cookie cookie = new Cookie("memberId", String.valueOf(memberId));
+            httpServletResponse.addCookie(cookie);
+            return ResponseDto.success(null);
+        }
+    }

@@ -65,7 +65,24 @@
     }
 
     function keepLoginButton(){
+      $.ajax({
+         type: "POST",
+         url: `/member/keepLogin`,
+         contentType: "application/json",
+         success: function () {
+           alert("로그인 유지 성공")
+         },
 
+         error: function(xhr){
+            try{
+                const errorResponse = JSON.parse(xhr.responseText);
+                alert(errorResponse.message);
+            }
+            catch(e){
+                alert("로그인 유지 기능 활성화 중 문제 발생")
+            }
+         }
+       });
     }
 </script>
 </html>
