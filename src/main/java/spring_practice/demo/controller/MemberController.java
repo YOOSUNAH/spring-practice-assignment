@@ -1,10 +1,8 @@
 package spring_practice.demo.controller;
 
 import groovy.util.logging.Slf4j;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import spring_practice.demo.dto.LoginRequestDto;
 import spring_practice.demo.dto.SignUpRequestDto;
 import spring_practice.demo.dto.UpdatePasswordRequestDto;
-import spring_practice.demo.entity.Member;
 import spring_practice.demo.global.ResponseDto;
 import spring_practice.demo.service.MemberService;
 
@@ -25,7 +22,6 @@ import spring_practice.demo.service.MemberService;
 @Slf4j
 public class MemberController {
 
-    private static final Logger log = LoggerFactory.getLogger(MemberController.class);
     private final MemberService memberService;
 
     @PostMapping("/signup")

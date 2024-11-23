@@ -25,7 +25,6 @@ import java.time.LocalTime;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private static final Logger log = LoggerFactory.getLogger(MemberService.class);
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     LocalTime now = LocalTime.now();
@@ -43,7 +42,7 @@ public class MemberService {
     }
 
     @Transactional
-    public Member login(LoginRequestDto loginRequestDto, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    public void login(LoginRequestDto loginRequestDto, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         // 회원 확인
         Member member = memberRepository.findByEmail(loginRequestDto.email).orElseThrow(
                 () -> new EntityExistsException("아이디가 일치하지 않습니다."));
@@ -75,7 +74,7 @@ public class MemberService {
             recordLoginTrial(session, ++loginCount);
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다." + (checkCount - loginCount + 1) + "번의 기회가 남았습니다.");
         }
-        return member;
+
     }
 
     public void recordLoginTrial(HttpSession session, int loginCount) {
@@ -84,7 +83,7 @@ public class MemberService {
     }
 
     public boolean verifyExceedLimit(int loginCount, int checkCount) {
-        return loginCount >= checkCount ? false : true;
+        return loginCount < checkCount;
     }
 
     public boolean verifyExceedTime(HttpSession session) {
