@@ -2,7 +2,9 @@ package spring_practice.demo.service;
 
 import groovy.util.logging.Slf4j;
 import jakarta.persistence.EntityExistsException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -40,20 +42,19 @@ public class MemberService {
     }
 
     @Transactional
-    public Member login(LoginRequestDto loginRequestDto, HttpServletRequest httpServletRequest) {
-
+    public Member login(LoginRequestDto loginRequestDto, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         // 회원 확인
         Member member = memberRepository.findByEmail(loginRequestDto.email).orElseThrow(
                 () -> new IllegalArgumentException("아이디가 일치하지 않습니다."));
 
+        // 유지하기 버튼을 눌렀으면 쿠키에도 저장
+        if(loginRequestDto.keepLogin){
+            Cookie cookie = new Cookie("memberId", String.valueOf(member.getMemberId()));
+            httpServletResponse.addCookie(cookie);
+        }
+
         // 세션 생성 및 정보 저장
         HttpSession session = httpServletRequest.getSession(true);
-//        String checkMemberEmail = session.getAttribute("memberEmail") == null ? "빈" : (String)session.getAttribute("memberEmail");
-//        int checkLoginCount = session.getAttribute("loginCount") == null ? 0 : (int)session.getAttribute("loginCount");
-//        LocalTime checkFailTime = session.getAttribute("failTime") == null ? LocalTime.now()  : (LocalTime) session.getAttribute("failTime");
-//        log.info("세션 저장 확인 memberEmail {}", checkMemberEmail);
-//        log.info("세션 저장 확인 loginCount {}", checkLoginCount);
-//        log.info("세션 저장 확인 checkFailTime {}", checkFailTime);
 
         String memberEmail = member.getEmail();
         session.setAttribute("memberEmail", memberEmail);
@@ -87,18 +88,19 @@ public class MemberService {
 
     public boolean verifyExceedTime(HttpSession session) {
         LocalTime failTime = session.getAttribute("failTime") == null ? LocalTime.now() : (LocalTime) session.getAttribute("failTime");
-//        log.info("실패최종시간 {}", failTime);
-
         now = LocalTime.now();
-//        log.info("현재시간 {}", now);
         LocalTime leftTime = now.minusHours(failTime.getHour())
                 .minusMinutes(failTime.getMinute())
                 .minusSeconds(failTime.getSecond());
-
-//        log.info("실패최종시간-현재시간 {}", leftTime);
-
+        // 60초동안 잠금
         LocalTime limitTime = LocalTime.of(0, 1);
-
         return !leftTime.isBefore(limitTime);
     }
+
+    @Transactional
+    public void logout(HttpSession session) {
+                session.invalidate();
+        }
+
+
 }

@@ -24,6 +24,8 @@ public class Member {
 
     private String phoneNumber;
 
+    private boolean keepLogin;
+
     public Member(SignUpRequestDto signUpRequestDto, String password){
         this.email = signUpRequestDto.email;
         this.password = password;

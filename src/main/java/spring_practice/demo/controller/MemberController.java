@@ -36,22 +36,49 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity<ResponseDto<Void>> login(@Valid @RequestBody LoginRequestDto loginRequestDto,
-                                                   HttpServletRequest httpServletRequest
-                                                   ) {
-        Member member = memberService.login(loginRequestDto, httpServletRequest);
+                                                   HttpServletRequest httpServletRequest,
+                                                   HttpServletResponse httpServletResponse
+    ) {
+        Member member = memberService.login(loginRequestDto, httpServletRequest, httpServletResponse);
         return ResponseDto.success(null);
     }
 
-        // TODO: 로그인 요청 API에서 “로그인 유지” 관련 값을 같이 받아야한다. 세션 잘 생성된건지 확인해야한다.
-        @PostMapping("/keepLogin")
-        public ResponseEntity<ResponseDto<Void>> keepLogin (HttpServletRequest httpServletRequest,
-                HttpServletResponse httpServletResponse
-    ){
-            HttpSession session = httpServletRequest.getSession();
-            Object memberId = session.getAttribute("memberId");
+    // TODO: 로그인 요청 API에서 “로그인 유지” 관련 값을 같이 받아야한다. 세션 잘 생성된건지 확인해야한다.
+//    @PostMapping("/keepLogin")
+//    public ResponseEntity<ResponseDto<Void>> keepLogin(
+//            @Valid @RequestBody LoginRequestDto loginRequestDto,
+//            HttpServletResponse httpServletResponse)
+//    {
+//        memberService.keepLogin(loginRequestDto,httpServletResponse);
+//        return ResponseDto.success(null);
+//    }
 
-            Cookie cookie = new Cookie("memberId", String.valueOf(memberId));
-            httpServletResponse.addCookie(cookie);
-            return ResponseDto.success(null);
+    @PostMapping("/logout")
+    public ResponseEntity<ResponseDto<Void>> logout(HttpServletRequest httpServletRequest) {
+        HttpSession session = httpServletRequest.getSession();
+        memberService.logout(session);
+
+        if(httpServletRequest.getCookies() == null){
+            log.info("request에 cookie가 없습니다... ");
+        }else{
+            log.info("request에 cookie가 있습니다!! ");
         }
+
+        if(httpServletRequest.getCookies() != null){
+            Cookie[] cookie = httpServletRequest.getCookies();
+            for(Cookie c : cookie){
+                c.setMaxAge(0);
+            }
+        }
+
+        if(httpServletRequest.getCookies() == null){
+            log.info("request에 cookie가 없습니다... ");
+        }
+
+        return ResponseDto.success(null);
     }
+
+
+}
+
+

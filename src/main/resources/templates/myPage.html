@@ -6,7 +6,42 @@
 </head>
 <body>
 
-    MyPage
 
+
+    <div class="container">
+        <h1>MyPage</h1>
+
+        <div class="form-group">
+            <button type="submit" id="logoutButton" onclick="logout()" class="btn btn-primary">로그아웃 하기</button>
+        </div>
+
+
+    </div>
 </body>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+
+    function logout() {
+       $.ajax({
+         type: "POST",
+         url: `/member/logout`,
+         contentType: "application/json",
+         success: function () {
+            alert("로그아웃이 완료되었습니다.")
+           window.location.href = `/homePage`;
+         },
+
+         error: function(xhr){
+            try{
+                const errorResponse = JSON.parse(xhr.responseText);
+                alert(errorResponse.message);
+            }
+            catch(e){
+                alert("로그아웃 중 문제 발생")
+            }
+         }
+       });
+    }
+</script>
 </html>

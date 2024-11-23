@@ -18,5 +18,7 @@ public class LoginRequestDto {
     @NotBlank(message = "비밀번호는 필수 입력값입니다. ")
     public String password;
 
+    public boolean keepLogin;
+
 
 }

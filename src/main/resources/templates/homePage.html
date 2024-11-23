@@ -20,12 +20,12 @@
     </div>
 
     <div class="form-group">
-        <button type="submit" id="keepLoginButton" onclick="keepLoginButton()" class="btn btn-primary">로그인 유지하기</button>
-        <button type="submit" id="loginButton" onclick="login()" class="btn btn-primary">로그인 하기</button>
+        <input type='checkbox' id="keepLogin" name='keepLogin' value='true'/>로그인 유지하기
+        <button type="submit" id="loginButton" onclick="login()" class="btn btn-primary">로그인</button>
     </div>
 
     <div>
-        <button type="submit" id="signupButton" onclick="signup()" class="btn btn-primary">회원 가입하러 가기</button>
+        <button type="submit" id="signupButton" onclick="signup()" class="btn btn-primary">회원 가입</button>
     </div>
 </div>
 
@@ -33,56 +33,37 @@
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>
+     function login() {
+        let email = $('#email').val();
+        let password = $('#password').val();
+        let keepLogin = $('#keepLogin').prop("checked");
 
-    function login() {
-       let email = $('#email').val();
-       let password = $('#password').val();
+        $.ajax({
+          type: "POST",
+          url: `/member/login`,
+          contentType: "application/json",
+          data: JSON.stringify({ email: email, password: password, keepLogin: keepLogin }),
+          success: function () {
+             alert("로그인이 완료되었습니다.")
+            window.location.href = `/myPage`;
+          },
 
-       $.ajax({
-         type: "POST",
-         url: `/member/login`,
-         contentType: "application/json",
-         data: JSON.stringify({ email: email, password: password }),
-         success: function () {
-            alert("로그인이 완료되었습니다.")
-           window.location.href = `/myPage`;
-         },
+          error: function(xhr){
+             try{
+                 const errorResponse = JSON.parse(xhr.responseText);
+                 alert(errorResponse.message);
+             }
+             catch(e){
+                 alert("로그인 중 문제 발생")
+             }
+          }
+        });
+     }
 
-         error: function(xhr){
-            try{
-                const errorResponse = JSON.parse(xhr.responseText);
-                alert(errorResponse.message);
-            }
-            catch(e){
-                alert("로그인 중 문제 발생")
-            }
-         }
-       });
-    }
+     function signup() {
+         window.location.href = `/member/signup`;
+     }
 
-    function signup() {
-        window.location.href = `/member/signup`;
-    }
 
-    function keepLoginButton(){
-      $.ajax({
-         type: "POST",
-         url: `/member/keepLogin`,
-         contentType: "application/json",
-         success: function () {
-           alert("로그인 유지 성공")
-         },
-
-         error: function(xhr){
-            try{
-                const errorResponse = JSON.parse(xhr.responseText);
-                alert(errorResponse.message);
-            }
-            catch(e){
-                alert("로그인 유지 기능 활성화 중 문제 발생")
-            }
-         }
-       });
-    }
 </script>
 </html>
