@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import spring_practice.demo.dto.SignUpRequestDto;
@@ -31,6 +32,11 @@ public class Member {
         this.password = password;
         this.name = signUpRequestDto.name;
         this.phoneNumber = signUpRequestDto.phoneNumber;
+        this.keepLogin = false;
+    }
+
+    public void updatePassword(String newPassword){
+        this.password = newPassword;
     }
 
 }

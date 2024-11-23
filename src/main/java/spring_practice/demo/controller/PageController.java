@@ -23,4 +23,9 @@ public class PageController implements ErrorController {
         return "myPage";
     }
 
+    @GetMapping("/updatePassword")
+    public String updatePassword(){
+        return "updatePassword";
+    }
+
 }
