@@ -5,6 +5,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring_practice.demo.dto.LoginRequestDto;
@@ -20,6 +22,7 @@ import spring_practice.demo.service.MemberService;
 @Slf4j
 public class MemberController {
 
+    private static final Logger log = LoggerFactory.getLogger(MemberController.class);
     private final MemberService memberService;
 
     @PostMapping("/signup")
@@ -37,6 +40,12 @@ public class MemberController {
         return ResponseDto.success(null);
     }
 
+    @PostMapping("/autoLogin")
+    public ResponseEntity<ResponseDto<String>> autoLogin( @CookieValue(value = "cookieValue", required = false) String cookieValue, HttpServletRequest httpServletRequest) {
+        memberService.autoLogin(cookieValue, httpServletRequest);
+        return ResponseDto.success(null);
+    }
+
     @PostMapping("/logout")
     public ResponseEntity<ResponseDto<Void>> logout(HttpServletRequest httpServletRequest) {
         memberService.logout(httpServletRequest);
@@ -50,6 +59,7 @@ public class MemberController {
         return ResponseDto.success(null);
 
     }
+
 
 
 }

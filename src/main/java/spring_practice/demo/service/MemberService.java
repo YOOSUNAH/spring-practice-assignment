@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import spring_practice.demo.dto.LoginRequestDto;
@@ -23,6 +25,7 @@ import java.time.LocalTime;
 @RequiredArgsConstructor
 public class MemberService {
 
+    private static final Logger log = LoggerFactory.getLogger(MemberService.class);
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     LocalTime now = LocalTime.now();
@@ -47,7 +50,10 @@ public class MemberService {
 
         // 유지하기 버튼을 눌렀으면 쿠키에도 저장
         if (loginRequestDto.keepLogin) {
-            Cookie cookie = new Cookie("cookieMemberId", String.valueOf(member.getMemberId()));
+            Cookie cookie = new Cookie("cookieValue", String.valueOf(member.getEmail()));
+            cookie.setPath("/");
+            cookie.setMaxAge(60*60);
+
             httpServletResponse.addCookie(cookie);
         }
 
@@ -96,6 +102,17 @@ public class MemberService {
     }
 
     @Transactional
+    public void autoLogin(String cookieValue,HttpServletRequest httpServletRequest) {
+        Member member = memberRepository.findByEmail(cookieValue).orElseThrow(
+                () -> new EntityExistsException("해당 member 가 없습니다 .")
+        );
+        // 세션 생성 및 정보 저장
+        HttpSession session = httpServletRequest.getSession(true);
+        String memberEmail = member.getEmail();
+        session.setAttribute("memberEmail", memberEmail);
+        session.setMaxInactiveInterval(3600);
+    }
+    @Transactional
     public void logout(HttpServletRequest httpServletRequest) {
         // 로그인 유지하기 버튼을 눌러서 쿠키가 있다면 삭제
         if (httpServletRequest.getCookies() != null) {
@@ -140,4 +157,6 @@ public class MemberService {
         logout(httpServletRequest);
 
     }
+
+
 }

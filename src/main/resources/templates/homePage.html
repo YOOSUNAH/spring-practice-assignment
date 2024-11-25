@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>homePage</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
 
 <div class="container">
     <h1>로그인</h1>
-
-
     <div class="form-group">
         <label for="email">email</label>
         <input type="text" class="form-control" id="email" name="email" placeholder="사용자 email">
@@ -32,40 +30,96 @@
     </div>
 </div>
 
+<div id="showLoggedInUI" style="display: none;">
+    <h1>환영합니다!</h1>
+    <button type="button" class="btn btn-primary" onclick="goToMypage()">마이페이지</button>
+</div>
+
 
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script>
-     function login() {
-        let email = $('#email').val();
-        let password = $('#password').val();
-        let keepLogin = $('#keepLogin').prop("checked");
+    $(document).ready(function() {
+         checkLoginStatus();
+     });
 
-        $.ajax({
-          type: "POST",
-          url: `/member/login`,
-          contentType: "application/json",
-          data: JSON.stringify({ email: email, password: password, keepLogin: keepLogin }),
-          success: function () {
-             alert("로그인이 완료되었습니다.")
-            window.location.href = `/myPage`;
-          },
+     function getCookie(name) {
+         const matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : null;
+    }
 
-          error: function(xhr){
-             try{
-                 const errorResponse = JSON.parse(xhr.responseText);
-                 alert(errorResponse.message);
-             }
-             catch(e){
-                 alert("로그인 중 문제 발생")
-             }
-          }
-        });
-     }
+    function checkLoginStatus(){
+        const cookie = getCookie("cookieValue");
+        // cookie 확인
+         console.log("cookie :", cookie);
+         alert("cookie: " + cookie);
 
-     function signup() {
-         window.location.href = `/member/signup`;
-     }
+        if (cookie) {
+            $.ajax({
+                type: "POST",
+                url: "/member/autoLogin",
+                success: function() {
+                    console.log("자동 로그인 성공");
+                    showLoggedInUI();
+                },
+                error: function() {
+                    console.log("자동 로그인 실패");
+                    showLoggedOutUI()
+                }
+            });
+        } else {
+            showLoggedOutUI();
+        }
+
+    }
+
+    function showLoggedInUI() {
+        $('#showLoggedInUI').show();
+        $('.container').hide();
+    }
+
+    function showLoggedOutUI() {
+        $('#showLoggedInUI').hide();
+        $('.container').show();
+    }
+
+    function goToMypage() {
+        window.location.href = `/myPage`;
+    }
+
+
+    function login() {
+         let email = $('#email').val();
+         let password = $('#password').val();
+         let keepLogin = $('#keepLogin').prop("checked");
+
+         $.ajax({
+           type: "POST",
+           url: `/member/login`,
+           contentType: "application/json",
+           data: JSON.stringify({ email: email, password: password, keepLogin: keepLogin }),
+           success: function () {
+              alert("로그인이 완료되었습니다.")
+             window.location.href = `/myPage`;
+           },
+
+           error: function(xhr){
+              try{
+                  const errorResponse = JSON.parse(xhr.responseText);
+                  alert(errorResponse.message);
+              }
+              catch(e){
+                  alert("로그인 중 문제 발생")
+              }
+           }
+         });
+      }
+
+      function signup() {
+          window.location.href = `/member/signup`;
+      }
 
 
 </script>
