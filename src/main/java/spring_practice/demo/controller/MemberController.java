@@ -5,8 +5,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring_practice.demo.dto.LoginRequestDto;
@@ -22,7 +20,6 @@ import spring_practice.demo.service.MemberService;
 @Slf4j
 public class MemberController {
 
-    private static final Logger log = LoggerFactory.getLogger(MemberController.class);
     private final MemberService memberService;
 
     @PostMapping("/signup")
@@ -41,7 +38,7 @@ public class MemberController {
     }
 
     @PostMapping("/autoLogin")
-    public ResponseEntity<ResponseDto<String>> autoLogin( @CookieValue(value = "cookieValue", required = false) String cookieValue, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<ResponseDto<String>> autoLogin(@CookieValue(value = "cookieValue", required = false) String cookieValue, HttpServletRequest httpServletRequest) {
         memberService.autoLogin(cookieValue, httpServletRequest);
         return ResponseDto.success(null);
     }
@@ -54,12 +51,11 @@ public class MemberController {
 
     @PutMapping("/updatePassword")
     public ResponseEntity<ResponseDto<Void>> updatePassword(@Valid @RequestBody UpdatePasswordRequestDto updatePasswordRequestDto,
-                                                            HttpServletRequest httpServletRequest){
+                                                            HttpServletRequest httpServletRequest) {
         memberService.updatePassword(updatePasswordRequestDto, httpServletRequest);
         return ResponseDto.success(null);
 
     }
-
 
 
 }

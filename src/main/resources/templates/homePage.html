@@ -52,27 +52,22 @@
 
     function checkLoginStatus(){
         const cookie = getCookie("cookieValue");
-        // cookie 확인
-         console.log("cookie :", cookie);
-         alert("cookie: " + cookie);
-
         if (cookie) {
             $.ajax({
                 type: "POST",
                 url: "/member/autoLogin",
                 success: function() {
-                    console.log("자동 로그인 성공");
+                    alert("자동 로그인 성공");
                     showLoggedInUI();
                 },
                 error: function() {
-                    console.log("자동 로그인 실패");
+                    alert("자동 로그인 실패");
                     showLoggedOutUI()
                 }
             });
         } else {
             showLoggedOutUI();
         }
-
     }
 
     function showLoggedInUI() {
