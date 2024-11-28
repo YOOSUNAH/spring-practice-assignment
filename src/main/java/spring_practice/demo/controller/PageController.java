@@ -33,5 +33,15 @@ public class PageController implements ErrorController {
         return "formTest";
     }
 
+    @GetMapping("/jsonTest")
+    public String jsonTest(){
+        return "jsonTest";
+    }
+
+    @GetMapping("/jsonResponse")
+    public String jsonResponse(){
+        return "jsonResponse";
+    }
+
 
 }

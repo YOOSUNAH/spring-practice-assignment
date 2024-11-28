@@ -1,14 +1,13 @@
 package spring_practice.demo.formVSjson;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/form")
@@ -17,8 +16,13 @@ public class FormController {
     @PostMapping("/submit2")
     public String handleFormRequest2(
             @ModelAttribute FormRequest formRequest,
-            Model model
+            Model model,
+            HttpServletRequest request
     ){
+        String length  = request.getHeader("Content-Length");
+        System.out.println("폼요청 - Content-Length : " + length + "byte");
+
+
         String name  = formRequest.getUser().getName();
         String email  = formRequest.getUser().getEmail();
         String orderId= formRequest.getOrder().getOrderId();
@@ -36,7 +40,6 @@ public class FormController {
         model.addAttribute("serviceName",serviceName);
         model.addAttribute("quantity",quantity );
         model.addAttribute("price", price );
-
         return "formResponse"; // formResponse.html 템플릿을 렌더링
     }
 

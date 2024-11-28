@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div class="container">
+    <h1>json Test</h1>
+    <div class="form-group">
+        <label for="name">name</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="사용자 이름">
+
+        <label for="email">email</label>
+        <input type="text" class="form-control" id="email" name="email" placeholder="사용자 email">
+
+        <label for="orderId">Order ID</label>
+        <input type="text" class="form-control" id="orderId" name="orderId" placeholder="orderId">
+
+        <label for="serviceId">Service Id</label>
+        <input type="text" class="form-control" id="serviceId" name="serviceId" placeholder="serviceId">
+
+        <label for="serviceName">Service Name</label>
+        <input type="text" class="form-control" id="serviceName" name="serviceName" placeholder="serviceName">
+
+        <label for="quantity">quantity</label>
+        <input type="number" class="form-control" id="quantity" name="quantity" placeholder="quantity">
+
+        <label for="price">price</label>
+        <input type="number" class="form-control" id="price" name="price" placeholder="price">
+    </div>
+
+    <button type="submit" id="jsonTestButton" onclick="jsonTest()" class="btn btn-primary">jsonTest 하기</button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+
+    function jsonTest() {
+       let name = $('#name').val();
+       let email = $('#email').val();
+       let orderId = $('#orderId').val();
+       let serviceId = $('#serviceId').val();
+       let serviceName = $('#serviceName').val();
+       let quantity = $('#quantity').val();
+       let price = $('#price').val();
+
+       $.ajax({
+         type: "POST",
+         url: `/json/submit`,
+         contentType: "application/json",
+         data: JSON.stringify({
+                                user: {
+                                    name: name,
+                                    email: email
+                                },
+                                order: {
+                                    orderId: orderId,
+                                    service: {
+                                        serviceId: serviceId,
+                                        serviceName: serviceName,
+                                        quantity: quantity,
+                                        price: price
+                                    }
+                                }
+                            }),
+         success: function () {
+            alert("json으로 요청보내기 완료되었습니다.")
+           window.location.href = `/jsonResponse`;
+         },
+
+         error: function(xhr){
+            try{
+                const errorResponse = JSON.parse(xhr.responseText);
+                alert(errorResponse.message);
+            }
+            catch(e){
+                alert("문제 발생")
+            }
+         }
+
+       });
+    }
+</script>
+</body>
+</html>

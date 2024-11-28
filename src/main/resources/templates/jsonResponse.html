@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Submission Response</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Form Submission Response</h1>
+
+    <div id="responseData" style="display:none;">
+
+        <div class="form-group">
+            <strong>Name:</strong> <span id="name"></span>
+        </div>
+        <div class="form-group">
+            <strong>Email:</strong> <span id="email"></span>
+        </div>
+        <div class="form-group">
+            <strong>Order ID:</strong> <span id="orderId"></span>
+        </div>
+        <div class="form-group">
+            <strong>Service ID:</strong> <span id="serviceId"></span>
+        </div>
+        <div class="form-group">
+            <strong>Service Name:</strong> <span id="serviceName"></span>
+        </div>
+        <div class="form-group">
+            <strong>Quantity:</strong> <span id="quantity"></span>
+        </div>
+        <div class="form-group">
+            <strong>Price:</strong> <span id="price"></span>
+        </div>
+    </div>
+
+    <div id="noDataMessage" style="display:none;">
+        <p>No data available.</p>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // 페이지 로드 시 서버에서 데이터를 가져오는 GET 요청을 합니다.
+        $.get('/json/getData', function(data) {
+            if (data && data.jsonResponse) {
+                // jsonResponse가 존재하면 데이터를 화면에 표시합니다.
+                $('#responseData').show();
+                $('#name').text(data.jsonResponse.name);
+                $('#email').text(data.jsonResponse.email);
+                $('#orderId').text(data.jsonResponse.orderId);
+                $('#serviceId').text(data.jsonResponse.serviceId);
+                $('#serviceName').text(data.jsonResponse.serviceName);
+                $('#quantity').text(data.jsonResponse.quantity);
+                $('#price').text(data.jsonResponse.price);
+            } else {
+                // jsonResponse가 없으면 No data available 메시지를 표시합니다.
+                $('#noDataMessage').show();
+            }
+        }).fail(function() {
+            alert("데이터를 가져오는 데 문제가 발생했습니다.");
+        });
+    });
+</script>
+
+</body>
+</html>
