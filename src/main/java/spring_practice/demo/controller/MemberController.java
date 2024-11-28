@@ -23,35 +23,44 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity<ResponseDto<Void>> signup(@Valid @RequestBody SignUpRequestDto signUpRequestDto) {
+    public ResponseEntity<ResponseDto<Void>> signup(
+        @Valid @RequestBody SignUpRequestDto signUpRequestDto)
+    {
         memberService.signup(signUpRequestDto);
         return ResponseDto.success(null);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseDto<Void>> login(@Valid @RequestBody LoginRequestDto loginRequestDto,
-                                                   HttpServletRequest httpServletRequest,
-                                                   HttpServletResponse httpServletResponse
+    public ResponseEntity<ResponseDto<Void>> login(
+       @Valid @RequestBody LoginRequestDto loginRequestDto,
+       HttpServletRequest httpServletRequest,
+       HttpServletResponse httpServletResponse
     ) {
         memberService.login(loginRequestDto, httpServletRequest, httpServletResponse);
         return ResponseDto.success(null);
     }
 
     @PostMapping("/autoLogin")
-    public ResponseEntity<ResponseDto<String>> autoLogin(@CookieValue(value = "cookieValue", required = false) String cookieValue, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<ResponseDto<String>> autoLogin(
+        @CookieValue(value = "cookieValue", required = false) String cookieValue,
+        HttpServletRequest httpServletRequest)
+    {
         memberService.autoLogin(cookieValue, httpServletRequest);
         return ResponseDto.success(null);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<ResponseDto<Void>> logout(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<ResponseDto<Void>> logout(HttpServletRequest httpServletRequest)
+    {
         memberService.logout(httpServletRequest);
         return ResponseDto.success(null);
     }
 
     @PutMapping("/updatePassword")
-    public ResponseEntity<ResponseDto<Void>> updatePassword(@Valid @RequestBody UpdatePasswordRequestDto updatePasswordRequestDto,
-                                                            HttpServletRequest httpServletRequest) {
+    public ResponseEntity<ResponseDto<Void>> updatePassword(
+        @Valid @RequestBody UpdatePasswordRequestDto updatePasswordRequestDto,
+        HttpServletRequest httpServletRequest)
+    {
         memberService.updatePassword(updatePasswordRequestDto, httpServletRequest);
         return ResponseDto.success(null);
 

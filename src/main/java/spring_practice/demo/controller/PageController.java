@@ -27,4 +27,11 @@ public class PageController implements ErrorController {
         return "updatePassword";
     }
 
+
+    @GetMapping("/formTest")
+    public String formTest(){
+        return "formTest";
+    }
+
+
 }

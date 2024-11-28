@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>폼 요청 </title>
+</head>
+<body>
+    <form action="/form/submit2" method="post">
+        <!-- User 정보 -->
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="user.name" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="user.email" required><br>
+
+        <!-- Order 정보 -->
+        <label for="orderId">Order ID:</label>
+        <input type="text" id="orderId" name="order.orderId" required><br>
+
+        <!-- Product 정보 -->
+        <label for="serviceId">Service Id :</label>
+        <input type="text" id="serviceId" name="order.service.serviceId" required><br>
+
+        <label for="serviceName">Service Name:</label>
+        <input type="text" id="serviceName" name="order.service.serviceName" required><br>
+
+        <label for="quantity">quantity:</label>
+        <input type="number" id="quantity" name="order.service.quantity" required><br>
+
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="order.service.price" required><br>
+
+        <button type="submit">Submit Form</button>
+    </form>
+</body>
+</html>

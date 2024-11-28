@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Response</title>
+</head>
+<body>
+<h1>Form Response Data</h1>
+
+<!-- User Information -->
+<p>Name: <span th:text="${name}"></span></p>
+<p>Email: <span th:text="${email}"></span></p>
+
+<!-- Order Information -->
+<p>Order ID: <span th:text="${orderId}"></span></p>
+
+<!-- Product Information -->
+<h2>Product</h2>
+<p>Product ID: <span th:text="${serviceId}"></span></p>
+<p>Product Name: <span th:text="${serviceName}"></span></p>
+<p>Quantity: <span th:text="${quantity}"></span></p>
+<p>Price: <span th:text="${price}"></span></p>
+
+</body>
+</html>
