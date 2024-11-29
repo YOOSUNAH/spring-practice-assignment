@@ -1,4 +1,5 @@
-package spring_practice.demo.formVSjson;
+package spring_practice.formVSjson;
+
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -8,10 +9,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class JsonRequest {
+public class FormRequestEntity {
 
-    private JsonRequest.User user;
-    private JsonRequest.Order order;
+    private User user;
+    private Order order;
 
     @Getter
     @Setter
@@ -28,7 +29,7 @@ public class JsonRequest {
     public static class Order {
 
         private String orderId;
-        private JsonRequest.Order.Service service;
+        private Service service;
 
         @Getter
         @Setter

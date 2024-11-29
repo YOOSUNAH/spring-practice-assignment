@@ -1,4 +1,4 @@
-package spring_practice.demo.formVSjson;
+package spring_practice.formVSjson;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

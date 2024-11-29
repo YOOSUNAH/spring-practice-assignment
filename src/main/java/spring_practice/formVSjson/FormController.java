@@ -1,4 +1,4 @@
-package spring_practice.demo.formVSjson;
+package spring_practice.formVSjson;
 
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +15,7 @@ public class FormController {
 
     @PostMapping("/submit2")
     public String handleFormRequest2(
-            @ModelAttribute FormRequest formRequest,
+            @ModelAttribute FormRequestEntity formRequestEntity,
             Model model,
             HttpServletRequest request
     ){
@@ -23,11 +23,11 @@ public class FormController {
         System.out.println("폼요청 - Content-Length : " + length + "byte");
 
 
-        String name  = formRequest.getUser().getName();
-        String email  = formRequest.getUser().getEmail();
-        String orderId= formRequest.getOrder().getOrderId();
+        String name  = formRequestEntity.getUser().getName();
+        String email  = formRequestEntity.getUser().getEmail();
+        String orderId= formRequestEntity.getOrder().getOrderId();
 
-        FormRequest.Order.Service service = formRequest.getOrder().getService();
+        FormRequestEntity.Order.Service service = formRequestEntity.getOrder().getService();
         String serviceId =  service.getServiceId();
         String serviceName = service.getServiceName();
         int quantity =  service.getQuantity();

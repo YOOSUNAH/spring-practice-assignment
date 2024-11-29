@@ -65,8 +65,6 @@ public class MemberController {
         return ResponseDto.success(null);
 
     }
-
-
 }
 
 
