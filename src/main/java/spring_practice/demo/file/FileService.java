@@ -1,21 +1,23 @@
-package spring_practice.fileUploadDownload;
+package spring_practice.demo.file;
 
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -45,15 +47,10 @@ public class FileService {
 
         // 5. 서버로 전송
         file.transferTo(newFile);
-
-        long size = file.getSize();
-        log.info("size : " + size);
-        log.info("originalFileName : " + originalFileName);
-        log.info("name : " + name);
     }
 
     @Transactional
-    public void uploadMultiFile(ArrayList<MultipartFile> multiFile, Model model ) throws IOException {
+    public void uploadMultiFile(List<MultipartFile> multiFile, Model model) throws IOException {
         ArrayList<String> originalFileNameList = new ArrayList<String>();
 
         for (MultipartFile file : multiFile) {
@@ -81,29 +78,44 @@ public class FileService {
     }
 
     @Transactional
-    public List<String> getAllFiles() {
+    public List<String> getFileList() {
         File dir = new File(uploadPath);
         String[] fileNames = dir.list();
         return Arrays.asList(fileNames);
     }
 
+
     @Transactional
-    public Resource download(String fileName) {
-        try {
+    public void download(String fileName,
+                         HttpServletResponse response) throws IOException {
 
-            Path filePath = new File(uploadPath, fileName).toPath();
-            Resource resource = new UrlResource(filePath.toUri());
+        Path filePath = Paths.get(uploadPath).resolve(fileName); // 파일 경로 생성
+        File file = filePath.toFile();
 
-            if (resource.exists()) {
-                return resource;
-            } else {
-                throw new RuntimeException("file not found : " + fileName);
-            }
-        } catch (MalformedURLException e){
-            throw new RuntimeException("file not found : " + fileName);
+        if (!file.exists()) {
+            log.error("파일을 찾을 수 없다: {}", fileName);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "파일을 찾을 수 없습니다.");
         }
 
+        // 파일 정보 설정
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE); // 일반 파일 다운로드
+        String DISPOSITION = "attachment; filename=\"" + file.getName() + "\"";
+        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, DISPOSITION);
+        response.setContentLengthLong(file.length());
+
+        // 파일 스트림 전송
+        try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
+             BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream())) {
+
+            byte[] buffer = new byte[8192]; // 8KB 버퍼
+            int bytesRead;
+            while ((bytesRead = in.read(buffer)) != -1) {  // 읽은 데이터가 없을 때까지 반복
+                out.write(buffer, 0, bytesRead);
+                log.info("파일 다운로드 완료: {}", fileName);
+            }
+        } catch (IOException e) {
+            log.error("파일 다운로드 중 오류 발생: {}", e.getMessage());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "다운로드중 오류 발생");
+        }
     }
-
-
 }

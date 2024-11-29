@@ -1,4 +1,4 @@
-package spring_practice.fileUploadDownload;
+package spring_practice.demo.file;
 
 import lombok.Data;
 
