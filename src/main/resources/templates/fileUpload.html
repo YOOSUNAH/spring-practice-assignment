@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+
+<h1>Upload Files</h1>
+
+<form method="post" enctype="multipart/form-data" action="/upload">
+    <input type="text" name="name" />
+    <input type="file" name="file" />
+    <button type="submit">Upload</button>
+</form>
+
+<br>
+
+<form method="post" enctype="multipart/form-data" action="/upload/multiFile">
+    <input type="text" name="name" />
+    <input type="file" name="files" />
+    <button type="submit">Upload</button>
+</form>
+
+<hr>
+
+</body>
+</html>

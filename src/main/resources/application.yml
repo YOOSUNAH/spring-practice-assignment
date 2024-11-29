@@ -17,3 +17,14 @@ spring:
       url: jdbc:mysql://localhost:3306/${database.name}
       username: ${mysql.username}
       password: ${mysql.password}
+
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+file:
+  upload:
+    path: /Users/yuseon-a/upload/

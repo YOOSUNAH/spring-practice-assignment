@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>업로드된 파일 목록</title>
+</head>
+<body>
+<h1>업로드된 파일 목록</h1>
+
+<!-- 업로드된 파일 목록을 출력 -->
+<ul>
+    <th:block th:each="file : ${files}">
+        <li>
+            <!-- 다운로드 링크 제공 -->
+            <a th:href="@{/download/{fileName}(fileName=${file})}" th:text="${file}"></a>
+        </li>
+    </th:block>
+</ul>
+
+<!-- 파일 업로드 페이지로 돌아가는 링크 -->
+<a href="/fileUpload">파일 업로드 페이지로 돌아가기</a>
+
+</body>
+</html>

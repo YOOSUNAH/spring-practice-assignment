@@ -43,5 +43,17 @@ public class PageController implements ErrorController {
         return "jsonResponse";
     }
 
+    @GetMapping("/fileUpload")
+    public String fileUpload(){
+        return "/fileUpload";
+    }
+
+    @GetMapping("/fileResult")
+    public String fileResult(){
+        return "/fileResult";
+    }
+
+
+
 
 }
