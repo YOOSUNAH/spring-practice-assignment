@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+
+
+
+<h1> modelattribute 사용 </h1>
+
+<form action="/upload/modelattribute" method="POST" enctype="multipart/form-data">
+    <label for="description"> description :</label>
+    <input type="text" id="description" name="description" required>  <br>
+    <input type="file" name="file" required>  <br>
+    <button type="submit">Upload</button>
+</form>
+
+<hr>
+
+</body>
+</html>
+
+

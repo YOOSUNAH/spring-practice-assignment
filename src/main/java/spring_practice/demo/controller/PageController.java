@@ -7,16 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class PageController implements ErrorController {
 
-    @GetMapping("/fileUpload")
-    public String fileUpload(){
-        return "/fileUpload";
-    }
-
-    @GetMapping("/fileResult")
-    public String fileResult(){
-        return "/fileResult";
-    }
-
     @GetMapping("/member/signup")
     public String signUpPage(){
         return "signup";
@@ -53,7 +43,30 @@ public class PageController implements ErrorController {
         return "jsonResponse";
     }
 
+    @GetMapping("/fileUpload")
+    public String fileUpload(){
+        return "/fileUpload";
+    }
 
+    @GetMapping("/fileResult")
+    public String fileResult(){
+        return "/fileResult";
+    }
+
+    @GetMapping("/fileUpload-octest-stream")
+    public String fileUploadOctestStream(){
+        return "/fileUpload-octest-stream";
+    }
+
+    @GetMapping("/fileUploadModelattribute")
+    public String fileUploadModelattribute(){
+        return "/fileUpload-modelattribute";
+    }
+
+    @GetMapping("/fileUpload-request-part")
+    public String fileUploadRequestPart(){
+        return "/fileUpload-request-part";
+    }
 
 
 

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+
+
+
+<h2> request part 이용 </h2>
+
+
+<form action="/upload/request-part" method="POST" enctype="multipart/form-data">
+    <!-- 파일 업로드 -->
+    <label for="file">File:</label>
+    <input type="file" id="file" name="file" required><br><br>
+
+    <!-- 추가 데이터 -->
+    <label for="postPerson">postPerson:</label>
+    <input type="text" id="postPerson" name="postPerson" placeholder="Enter postPerson" required><br><br>
+
+    <label for="fileName">fileName:</label>
+    <input type="text" id="fileName" name="fileName" placeholder="Enter fileName" required><br><br>
+
+    <!-- 제출 버튼 -->
+    <button type="submit">Upload</button>
+</form>
+
+
+
+
+<!--<form id="uploadForm" action="/upload/request-part" method="POST" enctype="multipart/form-data">-->
+
+<!--    <input type="file" id="file" name="file" required> <br>-->
+
+<!--    <input type="text" id="fileName" placeholder="File Name" required> <br>-->
+
+<!--    <input type="text" id="postPerson" placeholder="Post Person" required> <br>-->
+
+<!--    <button type="button" onclick="submitForm()">Upload</button>-->
+<!--</form>-->
+
+</body>
+
+
+<script>
+<!--    function submitForm() {-->
+<!--        const fileInput = document.getElementById('file');-->
+<!--        const file = fileInput.files[0]; // 파일 데이터-->
+
+<!--        // DTO 데이터를 JSON 형식으로 직렬화-->
+<!--        const fileName = document.getElementById('fileName').value;-->
+<!--        const postPerson = document.getElementById('postPerson').value;-->
+
+<!--        const formData = new FormData();-->
+<!--        formData.append("file", file);-->
+<!--        formData.append("data", JSON.stringify({ fileName, postPerson })); // JSON 직렬화-->
+
+<!--        fetch('/upload/request-part', {-->
+<!--            method: 'POST',-->
+<!--            body: formData-->
+<!--        })-->
+<!--        .then(response => {-->
+<!--            if (response.ok) {-->
+<!--                alert("업로드 성공!");-->
+<!--                window.location.href = "/fileList";-->
+<!--            } else {-->
+<!--                alert("업로드 실패!");-->
+<!--            }-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error('Error:', error);-->
+<!--            alert("서버 오류 발생!");-->
+<!--        });-->
+<!--    }-->
+</script>
+
+</html>
