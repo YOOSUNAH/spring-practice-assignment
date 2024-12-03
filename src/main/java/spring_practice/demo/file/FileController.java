@@ -52,7 +52,7 @@ public class FileController {
             @RequestPart("postPerson") String postPerson,
             @RequestPart("fileName") String fileName
 
-            // TODO : 객체로 받는것 실패함
+
     ) throws IOException {
 
         RequestPartDto requestPartDto = new RequestPartDto();
