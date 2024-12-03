@@ -1,13 +1,10 @@
 package spring_practice.demo.file;
 
-
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -15,7 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.net.MalformedURLException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -40,7 +38,8 @@ public class FileService {
 
         // 3. 파일 이름이 중복되지 않도록 파일 이름 변경 : 서버에 저장할 이름
         UUID uuid = UUID.randomUUID();
-        String savedFileName = uuid.toString() + "_" + originalFileName;
+
+        String savedFileName = name + "_" + uuid.toString() + "_" + originalFileName; // 예: originalFileName = 스크린캡쳐.png
 
         // 4. 파일 생성
         File newFile = new File(uploadPath + savedFileName);
@@ -97,9 +96,13 @@ public class FileService {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "파일을 찾을 수 없습니다.");
         }
 
+        // url 인코딩 하기
+        String encodedFileName = URLEncoder.encode(file.getName(), StandardCharsets.UTF_8);
+
+        // TODO: 코드이해하기, 무슨 의미인지
         // 파일 정보 설정
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE); // 일반 파일 다운로드
-        String DISPOSITION = "attachment; filename=\"" + file.getName() + "\"";
+        String DISPOSITION = "attachment; filename=\"" + encodedFileName + "\"";
         response.addHeader(HttpHeaders.CONTENT_DISPOSITION, DISPOSITION);
         response.setContentLengthLong(file.length());
 

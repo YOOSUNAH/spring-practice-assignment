@@ -63,12 +63,10 @@ public class FileController {
     }
 
     @GetMapping("/download/{fileName}")
-    public void downloadFile(@PathVariable String fileName,
+    public void downloadFile(@PathVariable("fileName") String fileName,
                              HttpServletResponse response) throws IOException {
         fileService.download(fileName, response);
-
     }
-
 
 
 

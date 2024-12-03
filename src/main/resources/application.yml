@@ -28,3 +28,7 @@ spring:
 file:
   upload:
     path: /Users/yuseon-a/upload/
+
+logging:
+  level:
+    org.springframework.web: DEBUG
