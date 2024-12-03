@@ -49,9 +49,10 @@ public class FileService {
     }
 
     @Transactional
-    public void uploadMultiFile(List<MultipartFile> multiFile, Model model) throws IOException {
+    public void uploadMultiFile(List<String> names,List<MultipartFile> multiFile, Model model) throws IOException {
         ArrayList<String> originalFileNameList = new ArrayList<String>();
 
+        int index = 0;
         for (MultipartFile file : multiFile) {
 
             // 2. 원본 파일 이름 알아오기
@@ -63,7 +64,8 @@ public class FileService {
             // 3. 파일 이름이 중복되지 않도록 파일 이름 변경 : 서버에 저장할 이름
             // UUID 클래스 사용
             UUID uuid = UUID.randomUUID();
-            String savedFileName = uuid.toString() + "_" + originalFileName;
+            String savedFileName = names.get(index) + "_" + uuid.toString() + "_" + originalFileName; // 예: originalFileName = 스크린캡쳐.png
+            index++;
 
             // 4. 파일 생성
             File newFile = new File(uploadPath + savedFileName);

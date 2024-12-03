@@ -39,6 +39,7 @@ public class FileController {
 
     @PostMapping("/upload/multiFile")
     public String uploadMultiFile(
+            @RequestParam("names") List<String> names,
             @RequestParam("files") List<MultipartFile> files,
             Model model
     ) throws IOException {
@@ -48,7 +49,7 @@ public class FileController {
             return "redirect:/fileUpload";
         }
 
-        fileService.uploadMultiFile(files, model);
+        fileService.uploadMultiFile(names, files, model);
 
         return "redirect:/fileList";
     }
