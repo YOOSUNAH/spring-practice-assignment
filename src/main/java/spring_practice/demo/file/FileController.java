@@ -51,7 +51,7 @@ public class FileController {
             @RequestPart("file") MultipartFile file,
             @RequestPart("postPerson") String postPerson,
             @RequestPart("fileName") String fileName
-
+            // TODO : 객체로 받는것 실패함
 
     ) throws IOException {
 
