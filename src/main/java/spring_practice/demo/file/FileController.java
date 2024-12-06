@@ -34,7 +34,7 @@ public class FileController {
         return "redirect:/fileList";
     }
 
-    @PostMapping("/upload/modelattribute")
+    @PostMapping(value = "/upload/modelattribute", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String uploadFileWithModel(@ModelAttribute FileUploadRequest requestDto)
             throws IOException {
 
@@ -46,13 +46,11 @@ public class FileController {
         return "redirect:/fileList";
     }
 
-    @PostMapping("/upload/request-part")
+    @PostMapping(value = "/upload/request-part", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String uploadFileWithRequestPart(
             @RequestPart("file") MultipartFile file,
             @RequestPart("postPerson") String postPerson,
             @RequestPart("fileName") String fileName
-            // TODO : 객체로 받는것 실패함
-
     ) throws IOException {
 
         RequestPartDto requestPartDto = new RequestPartDto();
