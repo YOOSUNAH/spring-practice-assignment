@@ -16,14 +16,14 @@ public class ConsoleScheduler {
     @Scheduled(cron = "0/5 * * * * *")
     public void schedulerWithFiveSeconds () {
         System.out.println("현재 시간 : " + new Date().toString());
-        log.info("로그 1 : 5초의 한번씩 ");
+        log.info("로그 1 : 0초부터 5초의 한번씩 ");
     }
 
     //2. 5분의 한번씩 로그 2을 찍는 스케줄러
     @Scheduled(cron = "0 0/5 * * * *")
     public void schedulerWithFiveMinutes () {
         System.out.println("현재 시간 : " + new Date().toString());
-        log.info("로그 2 : 5분의 한번씩 ");
+        log.info("로그 2 : 0분 부터 5분의 한번씩 ");
     }
 
     //3. 매시 , 15분에 로그 3을 찍는 스케줄러
@@ -45,5 +45,19 @@ public class ConsoleScheduler {
     public void schedulerWithOneDay () {
         System.out.println("현재 시간 : " + new Date().toString());
         log.info("로그 5 : 매월 1일에");
+    }
+
+
+    @Scheduled(fixedRate = 3000)
+    public void schedulerWithThreeSeconds () {
+        System.out.println("현재 시간 : " + new Date().toString());
+        log.info("로그 6 :  메서드 실행부터 3초의 한번씩 ");
+    }
+
+
+    @Scheduled(fixedRate = 60000)
+    public void schedulerWithOneMinutes () {
+        System.out.println("현재 시간 : " + new Date().toString());
+        log.info("로그 7 : 메서드 실행부터 1분의 한번씩 ");
     }
 }
